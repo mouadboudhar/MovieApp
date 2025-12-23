@@ -163,3 +163,127 @@ export const loginUser = async (
   }
 
   return { success: true, user };
+};
+
+/**
+ * Get user by ID
+ */
+export const getUserById = async (userId: number): Promise<DBUser | null> => {
+  const database = await getDatabase();
+
+  const user = await database.getFirstAsync<DBUser>(
+    'SELECT * FROM users WHERE id = ?',
+    [userId]
+  );
+
+  return user || null;
+};
+
+// ==================== COLLECTIONS ====================
+
+/**
+ * Create a new collection
+ */
+export const createCollection = async (name: string): Promise<number> => {
+  try {
+    const database = await getDatabase();
+    const createdAt = new Date().toISOString();
+
+    const result = await database.runAsync(
+      'INSERT INTO collections (name, created_at) VALUES (?, ?)',
+      [name, createdAt]
+    );
+
+    return result.lastInsertRowId;
+  } catch (error) {
+    console.error('createCollection error:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all collections
+ */
+export const getCollections = async (): Promise<Collection[]> => {
+  try {
+    const database = await getDatabase();
+
+    const collections = await database.getAllAsync<Collection>(
+      'SELECT * FROM collections ORDER BY created_at DESC'
+    );
+
+    return collections || [];
+  } catch (error) {
+    console.error('getCollections error:', error);
+    return [];
+  }
+};
+
+/**
+ * Add a movie to a collection
+ */
+export const addMovieToCollection = async (
+  collectionId: number,
+  movieObj: Movie
+): Promise<number> => {
+  try {
+    const database = await getDatabase();
+    const tmdbId = movieObj.tmdb_id ?? movieObj.id;
+
+    // Check if movie already exists in collection
+    const existing = await database.getFirstAsync<CollectionItem>(
+      'SELECT * FROM collection_items WHERE collection_id = ? AND tmdb_id = ?',
+      [collectionId, tmdbId]
+    );
+
+    if (existing) {
+      console.log('Movie already exists in collection');
+      return existing.id;
+    }
+
+    const result = await database.runAsync(
+      'INSERT INTO collection_items (collection_id, tmdb_id, title, poster_path) VALUES (?, ?, ?, ?)',
+      [collectionId, tmdbId, movieObj.title, movieObj.poster_path]
+    );
+
+    return result.lastInsertRowId;
+  } catch (error) {
+    console.error('addMovieToCollection error:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get all items in a collection
+ */
+export const getCollectionItems = async (
+  collectionId: number
+): Promise<CollectionItem[]> => {
+  try {
+    const database = await getDatabase();
+
+    const items = await database.getAllAsync<CollectionItem>(
+      'SELECT * FROM collection_items WHERE collection_id = ?',
+      [collectionId]
+    );
+
+    return items || [];
+  } catch (error) {
+    console.error('getCollectionItems error:', error);
+    return [];
+  }
+};
+
+/**
+ * Save or update a movie rating (to both local DB and server)
+ */
+export const saveRating = async (
+  tmdbId: number,
+  rating: number,
+  review: string | null = null,
+  title?: string,
+  posterPath?: string
+): Promise<void> => {
+  try {
+    const database = await getDatabase();
+

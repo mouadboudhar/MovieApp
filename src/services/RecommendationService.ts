@@ -96,3 +96,77 @@ export const getMovieDetails = async (movieId: number): Promise<MovieDetails | n
     console.error('Error fetching movie details:', error);
     return null;
   }
+};
+
+/**
+ * Get movie credits (cast & crew)
+ */
+export const getMovieCredits = async (movieId: number): Promise<Credits | null> => {
+  try {
+    const response = await tmdbApi.get<TMDBCreditsResponse>(
+      `/movie/${movieId}/credits`
+    );
+    return {
+      cast: response.data.cast.map((c) => ({
+        id: c.id,
+        name: c.name,
+        character: c.character,
+        profile_path: c.profile_path,
+        order: c.order,
+      })),
+      crew: response.data.crew.map((c) => ({
+        id: c.id,
+        name: c.name,
+        job: c.job,
+        department: c.department,
+        profile_path: c.profile_path,
+      })),
+    };
+  } catch (error) {
+    console.error('Error fetching movie credits:', error);
+    return null;
+  }
+};
+
+/**
+ * Get recommendations based on a specific movie
+ */
+export const getMovieRecommendations = async (
+  movieId: number
+): Promise<Movie[]> => {
+  try {
+    const response = await tmdbApi.get<TMDBRecommendationsResponse>(
+      `/movie/${movieId}/recommendations`
+    );
+    return response.data.results.map(transformMovie);
+  } catch (error) {
+    console.error('Error fetching movie recommendations:', error);
+    return [];
+  }
+};
+
+/**
+ * Get trending movies of the week
+ */
+export const getTrendingMovies = async (): Promise<Movie[]> => {
+  try {
+    const response = await tmdbApi.get<TMDBRecommendationsResponse>(
+      '/trending/movie/week'
+    );
+    return response.data.results.map(transformMovie);
+  } catch (error) {
+    console.error('Error fetching trending movies:', error);
+    return [];
+  }
+};
+
+/**
+ * Get now playing movies (latest releases in theaters)
+ */
+export const getNowPlayingMovies = async (): Promise<Movie[]> => {
+  try {
+    const response = await tmdbApi.get<TMDBRecommendationsResponse>(
+      '/movie/now_playing'
+    );
+    return response.data.results.map(transformMovie);
+  } catch (error) {

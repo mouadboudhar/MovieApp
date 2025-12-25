@@ -102,3 +102,48 @@ export const getCurrentUser = async (): Promise<User | null> => {
         'Authorization': `Bearer ${token}`,
       },
     });
+
+    if (!response.ok) {
+      // Token might be invalid/expired
+      if (response.status === 401 || response.status === 403) {
+        await SecureStore.deleteItemAsync(TOKEN_KEY);
+      }
+      return null;
+    }
+
+    const data = await response.json();
+    return data.user;
+  } catch (error) {
+    console.error('Error getting current user:', error);
+    return null;
+  }
+};
+
+/**
+ * Check if user is authenticated
+ */
+export const isAuthenticated = async (): Promise<boolean> => {
+  const user = await getCurrentUser();
+  return user !== null;
+};
+
+/**
+ * Logout - clear stored token
+ */
+export const logout = async (): Promise<void> => {
+  try {
+    await SecureStore.deleteItemAsync(TOKEN_KEY);
+    console.log('Logout successful');
+  } catch (error) {
+    console.error('Error during logout:', error);
+  }
+};
+
+export default {
+  login,
+  register,
+  getToken,
+  getCurrentUser,
+  isAuthenticated,
+  logout,
+};

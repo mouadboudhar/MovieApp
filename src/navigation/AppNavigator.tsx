@@ -83,3 +83,67 @@ const MainTabs: React.FC = () => {
         options={{
           tabBarIcon: ({ color, size }) => <Ionicons name="search-outline" size={size} color={color} />,
         }}
+      />
+      <Tab.Screen
+        name="Collections"
+        options={{
+          tabBarIcon: ({ color, size }) => <Ionicons name="bookmark-outline" size={size} color={color} />,
+        }}
+      >
+        {({ navigation }) =>
+          isAuthenticated ? (
+            <CollectionsScreen />
+          ) : (
+            <AuthRequiredScreen navigation={navigation} screenName="Collections" />
+          )
+        }
+      </Tab.Screen>
+      <Tab.Screen
+        name="Profile"
+        options={{
+          tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
+        }}
+      >
+        {({ navigation }) =>
+          isAuthenticated ? (
+            <ProfileScreen />
+          ) : (
+            <AuthRequiredScreen navigation={navigation} screenName="Profile" />
+          )
+        }
+      </Tab.Screen>
+    </Tab.Navigator>
+  );
+};
+
+// Root Stack Navigator
+const AppNavigator: React.FC = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Screen
+        name="MovieDetail"
+        component={MovieDetailScreen}
+        options={{
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'modal',
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'modal',
+        }}

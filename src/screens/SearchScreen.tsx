@@ -1,0 +1,246 @@
+import React, { useState, useCallback } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Modal,
+  ScrollView,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Movie, FilterOptions, RootStackParamList, Genre } from '../types';
+import { searchMovies } from '../services/RecommendationService';
+import { TMDB_IMAGE_SIZES } from '../config';
+
+const TMDB_IMAGE_BASE_URL = TMDB_IMAGE_SIZES.poster.medium;
+
+// Genre list from TMDB
+const GENRES: Genre[] = [
+  { id: 28, name: 'Action' },
+  { id: 12, name: 'Adventure' },
+  { id: 16, name: 'Animation' },
+  { id: 35, name: 'Comedy' },
+  { id: 80, name: 'Crime' },
+  { id: 99, name: 'Documentary' },
+  { id: 18, name: 'Drama' },
+  { id: 10751, name: 'Family' },
+  { id: 14, name: 'Fantasy' },
+  { id: 36, name: 'History' },
+  { id: 27, name: 'Horror' },
+  { id: 10402, name: 'Music' },
+  { id: 9648, name: 'Mystery' },
+  { id: 10749, name: 'Romance' },
+  { id: 878, name: 'Science Fiction' },
+  { id: 10770, name: 'TV Movie' },
+  { id: 53, name: 'Thriller' },
+  { id: 10752, name: 'War' },
+  { id: 37, name: 'Western' },
+];
+
+const YEARS = Array.from({ length: 30 }, (_, i) => 2025 - i);
+
+const SORT_OPTIONS = [
+  { value: 'popularity', label: 'Popularity' },
+  { value: 'vote_average', label: 'Rating' },
+  { value: 'release_date', label: 'Release Date' },
+] as const;
+
+const SearchScreen: React.FC = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({});
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const handleSearch = useCallback(async () => {
+    if (!searchQuery.trim()) return;
+
+    setIsLoading(true);
+    setHasSearched(true);
+    try {
+      let results = await searchMovies(searchQuery);
+
+      // Apply filters
+      if (filters.genre) {
+        results = results.filter((m) => m.genre_ids?.includes(filters.genre!));
+      }
+      if (filters.year) {
+        results = results.filter((m) => {
+          const movieYear = m.release_date ? new Date(m.release_date).getFullYear() : null;
+          return movieYear === filters.year;
+        });
+      }
+      if (filters.sortBy) {
+        results = [...results].sort((a, b) => {
+          switch (filters.sortBy) {
+            case 'vote_average':
+              return (b.vote_average || 0) - (a.vote_average || 0);
+            case 'release_date':
+              return new Date(b.release_date || 0).getTime() - new Date(a.release_date || 0).getTime();
+            default:
+              return 0;
+          }
+        });
+      }
+
+      setMovies(results);
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchQuery, filters]);
+
+  const handleMoviePress = (movie: Movie) => {
+    navigation.navigate('MovieDetail', { movie });
+  };
+
+  const clearFilters = () => {
+    setFilters({});
+  };
+
+  const applyFilters = () => {
+    setIsFilterModalVisible(false);
+    if (searchQuery.trim()) {
+      handleSearch();
+    }
+  };
+
+  const renderMovieItem = ({ item }: { item: Movie }) => {
+    const posterUri = item.poster_path
+      ? `${TMDB_IMAGE_BASE_URL}${item.poster_path}`
+      : null;
+
+    return (
+      <TouchableOpacity
+        style={styles.movieCard}
+        onPress={() => handleMoviePress(item)}
+        activeOpacity={0.7}
+      >
+        {posterUri ? (
+          <Image source={{ uri: posterUri }} style={styles.poster} />
+        ) : (
+          <View style={[styles.poster, styles.placeholderPoster]}>
+            <Text style={styles.placeholderText}>No Image</Text>
+          </View>
+        )}
+        <View style={styles.movieInfo}>
+          <Text style={styles.movieTitle} numberOfLines={2}>
+            {item.title}
+          </Text>
+          {item.vote_average !== undefined && (
+            <View style={styles.ratingContainer}>
+              <Text style={styles.starIcon}>★</Text>
+              <Text style={styles.rating}>{item.vote_average.toFixed(1)}</Text>
+            </View>
+          )}
+          {item.release_date && (
+            <Text style={styles.releaseYear}>
+              {new Date(item.release_date).getFullYear()}
+            </Text>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const activeFilterCount = Object.values(filters).filter(Boolean).length;
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Search</Text>
+      </View>
+
+      <View style={styles.searchContainer}>
+        <View style={styles.searchInputContainer}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search movies..."
+            placeholderTextColor="#666"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onSubmitEditing={handleSearch}
+            returnKeyType="search"
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Text style={styles.clearIcon}>✕</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <TouchableOpacity
+          style={[styles.filterButton, activeFilterCount > 0 && styles.filterButtonActive]}
+          onPress={() => setIsFilterModalVisible(true)}
+        >
+          <Text style={styles.filterIcon}>⚙️</Text>
+          {activeFilterCount > 0 && (
+            <View style={styles.filterBadge}>
+              <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
+
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#E50914" />
+        </View>
+      ) : movies.length > 0 ? (
+        <FlatList
+          data={movies}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderMovieItem}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : hasSearched ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>🎬</Text>
+          <Text style={styles.emptyText}>No movies found</Text>
+          <Text style={styles.emptySubtext}>Try a different search term</Text>
+        </View>
+      ) : (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>🔍</Text>
+          <Text style={styles.emptyText}>Search for movies</Text>
+          <Text style={styles.emptySubtext}>Find your favorite films</Text>
+        </View>
+      )}
+
+      {/* Filter Modal */}
+      <Modal
+        visible={isFilterModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsFilterModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Filters</Text>
+              <TouchableOpacity onPress={() => setIsFilterModalVisible(false)}>
+                <Text style={styles.closeButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={styles.modalScroll}>
+              {/* Genre Filter */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Genre</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={styles.chipContainer}>
+                    {GENRES.map((genre) => (
+                      <TouchableOpacity

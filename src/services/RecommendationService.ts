@@ -170,3 +170,78 @@ export const getNowPlayingMovies = async (): Promise<Movie[]> => {
     );
     return response.data.results.map(transformMovie);
   } catch (error) {
+    console.error('Error fetching now playing movies:', error);
+    return [];
+  }
+};
+
+/**
+ * Get personalized recommendations based on user's ratings
+ * - If user has a high-rated movie (>= 4 stars), get recommendations based on that movie
+ * - Otherwise, return trending movies of the week
+ */
+export const getRecommendations = async (): Promise<RecommendationResult> => {
+  try {
+    // Check if user has any highly rated movies
+    const lastHighRatedMovieId = await getLastHighRatedMovie();
+
+    if (lastHighRatedMovieId) {
+      // Get the movie details to show in the title
+      const movieDetails = await getMovieDetails(lastHighRatedMovieId);
+      const movieTitle = movieDetails?.title ?? 'your favorite movie';
+
+      // Fetch recommendations based on that movie
+      const recommendations = await getMovieRecommendations(lastHighRatedMovieId);
+
+      return {
+        title: `Because you liked ${movieTitle}`,
+        movies: recommendations,
+      };
+    }
+
+    // No high-rated movies, return trending
+    const trendingMovies = await getTrendingMovies();
+
+    return {
+      title: 'Trending This Week',
+      movies: trendingMovies,
+    };
+  } catch (error) {
+    console.error('Error getting recommendations:', error);
+
+    // Fallback to trending on error
+    const trendingMovies = await getTrendingMovies();
+    return {
+      title: 'Trending This Week',
+      movies: trendingMovies,
+    };
+  }
+};
+
+/**
+ * Search movies by query
+ */
+export const searchMovies = async (query: string): Promise<Movie[]> => {
+  try {
+    const response = await tmdbApi.get<TMDBRecommendationsResponse>(
+      '/search/movie',
+      {
+        params: { query },
+      }
+    );
+    return response.data.results.map(transformMovie);
+  } catch (error) {
+    console.error('Error searching movies:', error);
+    return [];
+  }
+};
+
+export default {
+  getRecommendations,
+  getMovieDetails,
+  getMovieCredits,
+  getMovieRecommendations,
+  getTrendingMovies,
+  getNowPlayingMovies,
+  searchMovies,
+};

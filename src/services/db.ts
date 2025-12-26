@@ -287,3 +287,127 @@ export const saveRating = async (
   try {
     const database = await getDatabase();
 
+    // Save locally
+    await database.runAsync(
+      `INSERT INTO ratings (tmdb_id, rating, review) VALUES (?, ?, ?)
+       ON CONFLICT(tmdb_id) DO UPDATE SET rating = excluded.rating, review = excluded.review`,
+      [tmdbId, rating, review]
+    );
+
+    // Also save to server if logged in
+    try {
+      const token = await getToken();
+      if (token) {
+        await fetch(`${API_BASE_URL}/ratings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            tmdb_id: tmdbId,
+            rating,
+            review,
+            title,
+            poster_path: posterPath,
+          }),
+        });
+      }
+    } catch (error) {
+      console.error('Error syncing rating to server:', error);
+      // Don't throw - local save succeeded
+    }
+
+    console.log(`Rating saved: Movie ${tmdbId} - ${rating} stars`);
+  } catch (error) {
+    console.error('saveRating error:', error);
+    throw error;
+  }
+};
+
+/**
+ * Get rating for a specific movie
+ */
+export const getRating = async (tmdbId: number): Promise<Rating | null> => {
+  try {
+    const database = await getDatabase();
+
+    const rating = await database.getFirstAsync<Rating>(
+      'SELECT * FROM ratings WHERE tmdb_id = ?',
+      [tmdbId]
+    );
+
+    return rating ?? null;
+  } catch (error) {
+    console.error('getRating error:', error);
+    return null;
+  }
+};
+
+/**
+ * Get the tmdb_id of the most recent movie rated >= 4 stars
+ */
+export const getLastHighRatedMovie = async (): Promise<number | null> => {
+  try {
+    const database = await getDatabase();
+
+    const result = await database.getFirstAsync<{ tmdb_id: number }>(
+      'SELECT tmdb_id FROM ratings WHERE rating >= 4 ORDER BY rowid DESC LIMIT 1'
+    );
+
+    return result?.tmdb_id ?? null;
+  } catch (error) {
+    console.error('getLastHighRatedMovie error:', error);
+    return null;
+  }
+};
+
+/**
+ * Delete a collection and all its items
+ */
+export const deleteCollection = async (collectionId: number): Promise<void> => {
+  try {
+    const database = await getDatabase();
+
+    await database.runAsync('DELETE FROM collection_items WHERE collection_id = ?', [
+      collectionId,
+    ]);
+    await database.runAsync('DELETE FROM collections WHERE id = ?', [collectionId]);
+  } catch (error) {
+    console.error('deleteCollection error:', error);
+    throw error;
+  }
+};
+
+/**
+ * Remove a movie from a collection
+ */
+export const removeMovieFromCollection = async (
+  collectionId: number,
+  tmdbId: number
+): Promise<void> => {
+  try {
+    const database = await getDatabase();
+
+    await database.runAsync(
+      'DELETE FROM collection_items WHERE collection_id = ? AND tmdb_id = ?',
+      [collectionId, tmdbId]
+    );
+  } catch (error) {
+    console.error('removeMovieFromCollection error:', error);
+    throw error;
+  }
+};
+
+export default {
+  initDB,
+  createCollection,
+  getCollections,
+  addMovieToCollection,
+  getCollectionItems,
+  saveRating,
+  getRating,
+  getLastHighRatedMovie,
+  deleteCollection,
+  removeMovieFromCollection,
+};

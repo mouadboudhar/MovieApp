@@ -147,3 +147,67 @@ const AppNavigator: React.FC = () => {
           animation: 'slide_from_bottom',
           presentation: 'modal',
         }}
+      />
+      <Stack.Screen
+        name="Ratings"
+        component={RatingsScreen}
+        options={{
+          animation: 'slide_from_right',
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const styles = StyleSheet.create({
+  authRequiredContainer: {
+    flex: 1,
+    backgroundColor: '#121212',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+  },
+  authRequiredTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 12,
+  },
+  authRequiredText: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  loginButton: {
+    backgroundColor: '#E50914',
+    paddingVertical: 14,
+    paddingHorizontal: 48,
+    borderRadius: 8,
+    marginBottom: 16,
+    minWidth: 200,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  registerButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#E50914',
+    paddingVertical: 14,
+    paddingHorizontal: 48,
+    borderRadius: 8,
+    minWidth: 200,
+    alignItems: 'center',
+  },
+  registerButtonText: {
+    color: '#E50914',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
+
+export default AppNavigator;

@@ -218,3 +218,169 @@ const ProfileScreen: React.FC = () => {
             <View style={styles.menuItemLeft}>
               <Ionicons name="warning-outline" size={22} color="#E50914" />
               <Text style={[styles.menuTitle, styles.menuTitleDanger]}>
+                Delete Account
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#E50914" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Logout Button */}
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={handleLogout}
+          disabled={authLoading}
+        >
+          <Ionicons name="log-out-outline" size={22} color="#E50914" />
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
+
+        {/* App Version */}
+        <Text style={styles.versionText}>Movie App v1.0.0</Text>
+      </ScrollView>
+
+      {/* Edit Profile Modal */}
+      <Modal
+        visible={editModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setEditModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Edit Profile</Text>
+              <TouchableOpacity onPress={() => setEditModalVisible(false)}>
+                <Ionicons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+            
+            <View style={styles.modalBody}>
+              <Text style={styles.inputLabel}>Name</Text>
+              <TextInput
+                style={styles.modalInput}
+                value={editName}
+                onChangeText={setEditName}
+                placeholder="Enter your name"
+                placeholderTextColor="#666"
+              />
+              
+              <Text style={styles.inputLabel}>Email</Text>
+              <TextInput
+                style={[styles.modalInput, styles.inputDisabled]}
+                value={user?.email || ''}
+                editable={false}
+                placeholder="Email"
+                placeholderTextColor="#666"
+              />
+              <Text style={styles.inputHint}>Email cannot be changed</Text>
+            </View>
+            
+            <View style={styles.modalFooter}>
+              <TouchableOpacity 
+                style={styles.cancelButton}
+                onPress={() => setEditModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.saveButton}
+                onPress={handleSaveProfile}
+              >
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  scrollContent: {
+    paddingBottom: 100,
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  userCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e1e1e',
+    marginHorizontal: 16,
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 20,
+  },
+  avatarContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#E50914',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  userInfo: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 2,
+  },
+  userEmail: {
+    fontSize: 14,
+    color: '#888',
+    marginBottom: 2,
+  },
+  memberSince: {
+    fontSize: 12,
+    color: '#666',
+  },
+  editButton: {
+    backgroundColor: '#333',
+    padding: 10,
+    borderRadius: 20,
+  },
+  statsLoading: {
+    backgroundColor: '#1e1e1e',
+    marginHorizontal: 16,
+    padding: 40,
+    borderRadius: 16,
+    marginBottom: 24,
+    alignItems: 'center',
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e1e1e',
+    marginHorizontal: 16,
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 24,
+  },
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',

@@ -150,3 +150,117 @@ const RatingsScreen: React.FC = () => {
       </TouchableOpacity>
     );
   };
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyContainer}>
+      <Ionicons name="star-outline" size={64} color="#666" />
+      <Text style={styles.emptyTitle}>No Ratings Yet</Text>
+      <Text style={styles.emptyText}>
+        Rate movies to keep track of what you've watched and loved!
+      </Text>
+      <TouchableOpacity
+        style={styles.browseButton}
+        onPress={() => navigation.navigate('MainTabs')}
+      >
+        <Text style={styles.browseButtonText}>Browse Movies</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const getAverageRating = () => {
+    if (ratings.length === 0) return 0;
+    const sum = ratings.reduce((acc, r) => acc + r.rating, 0);
+    return (sum / ratings.length).toFixed(1);
+  };
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>My Ratings</Text>
+        <View style={styles.headerRight} />
+      </View>
+
+      {/* Stats Summary */}
+      {ratings.length > 0 && (
+        <View style={styles.statsBar}>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{ratings.length}</Text>
+            <Text style={styles.statLabel}>Movies</Text>
+          </View>
+          <View style={styles.statDivider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{getAverageRating()}</Text>
+            <Text style={styles.statLabel}>Avg Rating</Text>
+          </View>
+        </View>
+      )}
+
+      {/* Content */}
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#E50914" />
+        </View>
+      ) : (
+        <FlatList
+          data={ratings}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderRatingItem}
+          contentContainerStyle={[
+            styles.listContent,
+            ratings.length === 0 && styles.emptyListContent,
+          ]}
+          ListEmptyComponent={renderEmptyState}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={handleRefresh}
+              tintColor="#E50914"
+              colors={['#E50914']}
+            />
+          }
+        />
+      )}
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  headerRight: {
+    width: 40,
+  },
+  statsBar: {
+    flexDirection: 'row',
+    backgroundColor: '#1e1e1e',
+    marginHorizontal: 16,
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 12,
+  },
+  statItem: {
+    flex: 1,

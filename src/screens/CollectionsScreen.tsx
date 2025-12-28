@@ -232,3 +232,179 @@ const CollectionsScreen: React.FC = () => {
             Create a collection to organize your favorite movies
           </Text>
           <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => setIsCreateModalVisible(true)}
+          >
+            <Text style={styles.createButtonText}>Create Collection</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.content}>
+          {/* Collections List */}
+          <View style={styles.collectionsSection}>
+            <FlatList
+              data={collections}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderCollectionCard}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.collectionsList}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={() => loadCollections(true)}
+                  tintColor="#E50914"
+                />
+              }
+            />
+          </View>
+
+          {/* Collection Items */}
+          {selectedCollection ? (
+            <View style={styles.itemsSection}>
+              <View style={styles.itemsHeader}>
+                <Text style={styles.itemsTitle}>{selectedCollection.name}</Text>
+                <Text style={styles.itemsCount}>
+                  {collectionItems.length} movie{collectionItems.length !== 1 ? 's' : ''}
+                </Text>
+              </View>
+
+              {collectionItems.length === 0 ? (
+                <View style={styles.emptyItemsContainer}>
+                  <Text style={styles.emptyItemsText}>No movies in this collection</Text>
+                  <Text style={styles.emptyItemsSubtext}>
+                    Add movies from the movie details page
+                  </Text>
+                </View>
+              ) : (
+                <FlatList
+                  data={collectionItems}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={renderMovieItem}
+                  numColumns={3}
+                  columnWrapperStyle={styles.moviesRow}
+                  contentContainerStyle={styles.moviesContent}
+                  showsVerticalScrollIndicator={false}
+                />
+              )}
+            </View>
+          ) : (
+            <View style={styles.selectCollectionContainer}>
+              <Text style={styles.selectCollectionText}>
+                Select a collection to view movies
+              </Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Create Collection Modal */}
+      <Modal
+        visible={isCreateModalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setIsCreateModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>New Collection</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Collection name"
+              placeholderTextColor="#666"
+              value={newCollectionName}
+              onChangeText={setNewCollectionName}
+              autoFocus
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.modalCancelButton}
+                onPress={() => {
+                  setNewCollectionName('');
+                  setIsCreateModalVisible(false);
+                }}
+              >
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalCreateButton}
+                onPress={handleCreateCollection}
+              >
+                <Text style={styles.modalCreateText}>Create</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  addButton: {
+    backgroundColor: '#E50914',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  content: {
+    flex: 1,
+  },
+  collectionsSection: {
+    paddingVertical: 12,
+  },
+  collectionsList: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  collectionCard: {
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    minWidth: 180,
+    marginRight: 12,
+  },
+  collectionCardSelected: {
+    backgroundColor: '#E50914',
+  },
+  collectionIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  collectionIconText: {
+    fontSize: 20,
+  },
+  collectionInfo: {

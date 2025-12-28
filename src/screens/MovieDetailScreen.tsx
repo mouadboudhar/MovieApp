@@ -319,3 +319,244 @@ const MovieDetailScreen: React.FC = () => {
         {movie.overview && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Overview</Text>
+            <Text style={styles.overview}>{movie.overview}</Text>
+          </View>
+        )}
+
+        {/* Star Rating */}
+        <View style={styles.ratingSection}>
+          <Text style={styles.sectionTitle}>Your Rating</Text>
+          <View style={styles.starsContainer}>
+            {[1, 2, 3, 4, 5].map(renderStar)}
+          </View>
+          {isSavingRating && (
+            <ActivityIndicator size="small" color="#E50914" style={styles.ratingLoader} />
+          )}
+          {userRating > 0 && !isSavingRating && (
+            <Text style={styles.ratingText}>
+              You rated this movie {userRating} star{userRating > 1 ? 's' : ''}
+            </Text>
+          )}
+        </View>
+
+        {/* Add to Collection Button */}
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={handleAddToCollection}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.addButtonText}>+ Add to Collection</Text>
+          )}
+        </TouchableOpacity>
+
+        {/* Cast & Crew Section */}
+        {isLoadingDetails ? (
+          <View style={styles.loadingSection}>
+            <ActivityIndicator size="small" color="#E50914" />
+            <Text style={styles.loadingText}>Loading details...</Text>
+          </View>
+        ) : (
+          <>
+            {/* Key Crew */}
+            {(director || producers.length > 0 || productionCompany) && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Cast & Crew</Text>
+                <View style={styles.crewGrid}>
+                  {director && renderCrewMember(director, 'Director')}
+                  {producers.map((p) => renderCrewMember(p, 'Producer'))}
+                  {productionCompany && (
+                    <View style={styles.crewCard}>
+                      <View style={[styles.crewImage, styles.companyPlaceholder]}>
+                        <Text style={styles.companyIcon}>🎬</Text>
+                      </View>
+                      <View style={styles.crewInfo}>
+                        <Text style={styles.crewName}>{productionCompany.name}</Text>
+                        <Text style={styles.crewRole}>Production Company</Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+              </View>
+            )}
+
+            {/* Cast */}
+            {credits && credits.cast.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Top Cast</Text>
+                <FlatList
+                  data={credits.cast.slice(0, 10)}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={renderCastMember}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.castList}
+                />
+              </View>
+            )}
+
+            {/* Recommendations */}
+            {recommendations.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Recommendations</Text>
+                <FlatList
+                  data={recommendations}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={renderRecommendation}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.recList}
+                />
+              </View>
+            )}
+          </>
+        )}
+      </ScrollView>
+
+      {/* Collection Selection Modal */}
+      <Modal
+        visible={isCollectionModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsCollectionModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Collection</Text>
+
+            {collections.length > 0 ? (
+              <FlatList
+                data={collections}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={renderCollectionItem}
+                style={styles.collectionList}
+              />
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No collections yet.</Text>
+                <Text style={styles.emptySubtext}>
+                  Create a collection first to add movies.
+                </Text>
+              </View>
+            )}
+
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setIsCollectionModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  scrollContent: {
+    padding: 16,
+    paddingBottom: 40,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    marginBottom: 16,
+    padding: 8,
+  },
+  backButtonText: {
+    color: '#E50914',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  posterContainer: {
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  poster: {
+    width: 220,
+    height: 330,
+    borderRadius: 12,
+  },
+  placeholderPoster: {
+    backgroundColor: '#2a2a2a',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    color: '#888',
+    fontSize: 16,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 4,
+  },
+  tagline: {
+    fontSize: 14,
+    fontStyle: 'italic',
+    color: '#888',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  metaText: {
+    fontSize: 14,
+    color: '#888',
+  },
+  metaDot: {
+    fontSize: 14,
+    color: '#555',
+    marginHorizontal: 8,
+  },
+  metaRating: {
+    fontSize: 14,
+    color: '#FFD700',
+    fontWeight: '600',
+  },
+  genresContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 16,
+  },
+  genreChip: {
+    backgroundColor: '#333',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  genreText: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  section: {
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 12,
+  },
+  overview: {
+    fontSize: 15,
+    color: '#ccc',

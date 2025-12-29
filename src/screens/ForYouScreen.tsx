@@ -162,3 +162,126 @@ const ForYouScreen: React.FC = () => {
         </View>
       </TouchableOpacity>
     );
+  }, [handleMoviePress]);
+
+  const renderEmptyComponent = useCallback(() => {
+    if (isLoading) return null;
+
+    return (
+      <View style={styles.emptyContainer}>
+        <Ionicons name="film-outline" size={64} color="#666" />
+        <Text style={styles.emptyText}>No movies available</Text>
+        <Text style={styles.emptySubtext}>
+          {activeTab === 'recommended'
+            ? 'Rate some movies to get personalized recommendations!'
+            : 'Pull down to refresh'}
+        </Text>
+      </View>
+    );
+  }, [isLoading, activeTab]);
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Movies</Text>
+        </View>
+        <View style={styles.tabContainer}>
+          {TABS.map(renderTab)}
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#E50914" />
+          <Text style={styles.loadingText}>Loading movies...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (error) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Movies</Text>
+        </View>
+        <View style={styles.errorContainer}>
+          <Ionicons name="alert-circle-outline" size={64} color="#E50914" />
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={() => fetchAllData()}>
+            <Text style={styles.retryButtonText}>Try Again</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const movies = getActiveMovies();
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Movies</Text>
+      </View>
+
+      {/* Tabs */}
+      <View style={styles.tabContainer}>
+        {TABS.map(renderTab)}
+      </View>
+
+      {/* Movie Grid */}
+      <FlatList
+        data={movies}
+        keyExtractor={(item) => `${activeTab}-${item.id}`}
+        renderItem={renderMovieItem}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={renderEmptyComponent}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            tintColor="#E50914"
+            colors={['#E50914']}
+          />
+        }
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 12,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    gap: 8,
+  },
+  tab: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1e1e1e',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    gap: 6,
+  },
+  activeTab: {
+    backgroundColor: '#2a1a1a',

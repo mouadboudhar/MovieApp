@@ -244,3 +244,188 @@ const SearchScreen: React.FC = () => {
                   <View style={styles.chipContainer}>
                     {GENRES.map((genre) => (
                       <TouchableOpacity
+                        key={genre.id}
+                        style={[
+                          styles.chip,
+                          filters.genre === genre.id && styles.chipActive,
+                        ]}
+                        onPress={() =>
+                          setFilters((f) => ({
+                            ...f,
+                            genre: f.genre === genre.id ? undefined : genre.id,
+                          }))
+                        }
+                      >
+                        <Text
+                          style={[
+                            styles.chipText,
+                            filters.genre === genre.id && styles.chipTextActive,
+                          ]}
+                        >
+                          {genre.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+
+              {/* Year Filter */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Year</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={styles.chipContainer}>
+                    {YEARS.map((year) => (
+                      <TouchableOpacity
+                        key={year}
+                        style={[
+                          styles.chip,
+                          filters.year === year && styles.chipActive,
+                        ]}
+                        onPress={() =>
+                          setFilters((f) => ({
+                            ...f,
+                            year: f.year === year ? undefined : year,
+                          }))
+                        }
+                      >
+                        <Text
+                          style={[
+                            styles.chipText,
+                            filters.year === year && styles.chipTextActive,
+                          ]}
+                        >
+                          {year}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+
+              {/* Sort By Filter */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Sort By</Text>
+                <View style={styles.sortContainer}>
+                  {SORT_OPTIONS.map((option) => (
+                    <TouchableOpacity
+                      key={option.value}
+                      style={[
+                        styles.sortOption,
+                        filters.sortBy === option.value && styles.sortOptionActive,
+                      ]}
+                      onPress={() =>
+                        setFilters((f) => ({
+                          ...f,
+                          sortBy: f.sortBy === option.value ? undefined : option.value,
+                        }))
+                      }
+                    >
+                      <Text
+                        style={[
+                          styles.sortOptionText,
+                          filters.sortBy === option.value && styles.sortOptionTextActive,
+                        ]}
+                      >
+                        {option.label}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </ScrollView>
+
+            <View style={styles.modalFooter}>
+              <TouchableOpacity style={styles.clearButton} onPress={clearFilters}>
+                <Text style={styles.clearButtonText}>Clear All</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+                <Text style={styles.applyButtonText}>Apply Filters</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    gap: 12,
+  },
+  searchInputContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+  },
+  searchIcon: {
+    fontSize: 18,
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    color: '#fff',
+    fontSize: 16,
+    paddingVertical: 12,
+  },
+  clearIcon: {
+    fontSize: 16,
+    color: '#666',
+    padding: 4,
+  },
+  filterButton: {
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    width: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterButtonActive: {
+    backgroundColor: '#E50914',
+  },
+  filterIcon: {
+    fontSize: 20,
+  },
+  filterBadge: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    backgroundColor: '#E50914',
+    borderRadius: 10,
+    width: 18,
+    height: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterBadgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listContent: {
+    padding: 12,

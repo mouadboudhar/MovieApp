@@ -429,3 +429,188 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 12,
+  },
+  row: {
+    justifyContent: 'space-between',
+  },
+  movieCard: {
+    width: '48%',
+    marginBottom: 16,
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  poster: {
+    width: '100%',
+    aspectRatio: 2 / 3,
+    backgroundColor: '#2a2a2a',
+  },
+  placeholderPoster: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    color: '#666',
+    fontSize: 12,
+  },
+  movieInfo: {
+    padding: 10,
+  },
+  movieTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 6,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  starIcon: {
+    color: '#FFD700',
+    fontSize: 14,
+    marginRight: 4,
+  },
+  rating: {
+    color: '#FFD700',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  releaseYear: {
+    fontSize: 12,
+    color: '#888',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+  },
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  emptyText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  emptySubtext: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 8,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#1e1e1e',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  closeButton: {
+    fontSize: 20,
+    color: '#888',
+  },
+  modalScroll: {
+    padding: 20,
+  },
+  filterSection: {
+    marginBottom: 24,
+  },
+  filterSectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 12,
+  },
+  chipContainer: {
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    gap: 8,
+  },
+  chip: {
+    backgroundColor: '#333',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  chipActive: {
+    backgroundColor: '#E50914',
+  },
+  chipText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  chipTextActive: {
+    fontWeight: '600',
+  },
+  sortContainer: {
+    gap: 8,
+  },
+  sortOption: {
+    backgroundColor: '#333',
+    padding: 14,
+    borderRadius: 12,
+  },
+  sortOptionActive: {
+    backgroundColor: '#E50914',
+  },
+  sortOptionText: {
+    color: '#fff',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  sortOptionTextActive: {
+    fontWeight: '600',
+  },
+  modalFooter: {
+    flexDirection: 'row',
+    padding: 20,
+    gap: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#333',
+  },
+  clearButton: {
+    flex: 1,
+    backgroundColor: '#333',
+    padding: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  clearButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  applyButton: {
+    flex: 1,
+    backgroundColor: '#E50914',
+    padding: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
+
+export default SearchScreen;

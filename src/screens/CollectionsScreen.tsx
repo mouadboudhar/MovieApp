@@ -408,3 +408,179 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   collectionInfo: {
+    flex: 1,
+  },
+  collectionName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  collectionDate: {
+    fontSize: 12,
+    color: '#888',
+  },
+  itemsSection: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  itemsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  itemsTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  itemsCount: {
+    fontSize: 14,
+    color: '#888',
+  },
+  moviesContent: {
+    paddingBottom: 100,
+  },
+  moviesRow: {
+    justifyContent: 'flex-start',
+    gap: 12,
+  },
+  movieCard: {
+    width: '31%',
+    marginBottom: 16,
+  },
+  poster: {
+    width: '100%',
+    aspectRatio: 2 / 3,
+    borderRadius: 8,
+    backgroundColor: '#2a2a2a',
+  },
+  placeholderPoster: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    color: '#666',
+    fontSize: 10,
+  },
+  movieTitle: {
+    fontSize: 12,
+    color: '#fff',
+    marginTop: 6,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+  },
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  emptyText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  emptySubtext: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  createButton: {
+    backgroundColor: '#E50914',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 24,
+  },
+  createButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  emptyItemsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyItemsText: {
+    color: '#888',
+    fontSize: 16,
+  },
+  emptyItemsSubtext: {
+    color: '#666',
+    fontSize: 14,
+    marginTop: 8,
+  },
+  selectCollectionContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectCollectionText: {
+    color: '#666',
+    fontSize: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalContent: {
+    backgroundColor: '#1e1e1e',
+    borderRadius: 16,
+    padding: 24,
+    width: '100%',
+    maxWidth: 400,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  modalInput: {
+    backgroundColor: '#333',
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  modalCancelButton: {
+    flex: 1,
+    backgroundColor: '#333',
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalCancelText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  modalCreateButton: {
+    flex: 1,
+    backgroundColor: '#E50914',
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalCreateText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
+
+export default CollectionsScreen;

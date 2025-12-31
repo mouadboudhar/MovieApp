@@ -285,3 +285,126 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     backgroundColor: '#2a1a1a',
+    borderWidth: 1,
+    borderColor: '#E50914',
+  },
+  tabIcon: {
+    marginRight: 2,
+  },
+  tabText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#888',
+  },
+  activeTabText: {
+    color: '#E50914',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: '#888',
+    fontSize: 16,
+    marginTop: 12,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    color: '#ff6b6b',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 16,
+    marginBottom: 20,
+  },
+  retryButton: {
+    backgroundColor: '#E50914',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  listContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 100,
+  },
+  row: {
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  movieCard: {
+    width: POSTER_WIDTH,
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  poster: {
+    width: '100%',
+    height: POSTER_WIDTH * 1.5,
+    backgroundColor: '#2a2a2a',
+  },
+  placeholderPoster: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  movieInfo: {
+    padding: 10,
+  },
+  movieTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 6,
+    minHeight: 36,
+  },
+  movieMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  rating: {
+    fontSize: 12,
+    color: '#FFD700',
+    fontWeight: '600',
+  },
+  releaseYear: {
+    fontSize: 12,
+    color: '#888',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+    marginTop: 40,
+  },
+  emptyText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 16,
+    textAlign: 'center',
+  },
+  emptySubtext: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+});
+
+export default ForYouScreen;

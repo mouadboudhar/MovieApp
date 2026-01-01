@@ -264,3 +264,117 @@ const styles = StyleSheet.create({
   },
   statItem: {
     flex: 1,
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#E50914',
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4,
+  },
+  statDivider: {
+    width: 1,
+    backgroundColor: '#333',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listContent: {
+    padding: 16,
+    paddingBottom: 100,
+  },
+  emptyListContent: {
+    flex: 1,
+  },
+  ratingCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+  },
+  poster: {
+    width: 60,
+    height: 90,
+    borderRadius: 8,
+    backgroundColor: '#2a2a2a',
+  },
+  placeholderPoster: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ratingInfo: {
+    flex: 1,
+    marginLeft: 12,
+    marginRight: 8,
+  },
+  movieTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 6,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    marginRight: 8,
+  },
+  ratingNumber: {
+    fontSize: 14,
+    color: '#FFD700',
+    fontWeight: '600',
+  },
+  review: {
+    fontSize: 13,
+    color: '#aaa',
+    fontStyle: 'italic',
+    marginBottom: 4,
+  },
+  ratingDate: {
+    fontSize: 12,
+    color: '#666',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyText: {
+    fontSize: 14,
+    color: '#888',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  browseButton: {
+    backgroundColor: '#E50914',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  browseButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
+
+export default RatingsScreen;

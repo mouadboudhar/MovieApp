@@ -560,3 +560,244 @@ const styles = StyleSheet.create({
   overview: {
     fontSize: 15,
     color: '#ccc',
+    lineHeight: 22,
+  },
+  ratingSection: {
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 8,
+  },
+  starButton: {
+    padding: 8,
+  },
+  star: {
+    fontSize: 36,
+    color: '#555',
+  },
+  starFilled: {
+    color: '#FFD700',
+  },
+  ratingLoader: {
+    marginTop: 8,
+  },
+  ratingText: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 8,
+  },
+  addButton: {
+    backgroundColor: '#E50914',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: 'center',
+    alignSelf: 'center',
+    minWidth: 200,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  loadingSection: {
+    alignItems: 'center',
+    padding: 32,
+  },
+  loadingText: {
+    color: '#888',
+    marginTop: 8,
+  },
+  crewGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  crewCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e1e1e',
+    padding: 12,
+    borderRadius: 12,
+    minWidth: SCREEN_WIDTH / 2 - 24,
+  },
+  crewImage: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    marginRight: 12,
+  },
+  crewPlaceholder: {
+    backgroundColor: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  crewPlaceholderText: {
+    fontSize: 20,
+  },
+  companyPlaceholder: {
+    backgroundColor: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  companyIcon: {
+    fontSize: 20,
+  },
+  crewInfo: {
+    flex: 1,
+  },
+  crewName: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  crewRole: {
+    color: '#888',
+    fontSize: 12,
+    marginTop: 2,
+  },
+  castList: {
+    gap: 12,
+  },
+  castCard: {
+    width: 100,
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  castImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 8,
+  },
+  castPlaceholder: {
+    backgroundColor: '#333',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  castPlaceholderText: {
+    fontSize: 32,
+  },
+  castName: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  castCharacter: {
+    color: '#888',
+    fontSize: 10,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  recList: {
+    gap: 12,
+  },
+  recCard: {
+    width: 120,
+    marginRight: 12,
+  },
+  recPoster: {
+    width: 120,
+    height: 180,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  recPlaceholder: {
+    backgroundColor: '#2a2a2a',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recPlaceholderText: {
+    fontSize: 32,
+  },
+  recTitle: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  recRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  recRatingStar: {
+    color: '#FFD700',
+    fontSize: 12,
+    marginRight: 4,
+  },
+  recRatingText: {
+    color: '#FFD700',
+    fontSize: 12,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#1e1e1e',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    maxHeight: '70%',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  collectionList: {
+    maxHeight: 300,
+  },
+  collectionItem: {
+    backgroundColor: '#2a2a2a',
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  collectionName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  collectionDate: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4,
+  },
+  emptyContainer: {
+    padding: 32,
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: '#888',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  emptySubtext: {
+    color: '#666',
+    fontSize: 14,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  closeButton: {
+    backgroundColor: '#333',
+    padding: 14,
+    borderRadius: 8,
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+});
+
+export default MovieDetailScreen;

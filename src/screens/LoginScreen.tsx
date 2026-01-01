@@ -149,3 +149,68 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     marginBottom: 32,
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: '#1e1e1e',
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: '#fff',
+    borderWidth: 1,
+    borderColor: '#333',
+  },
+  errorText: {
+    color: '#ff6b6b',
+    fontSize: 14,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  loginButton: {
+    backgroundColor: '#E50914',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  forgotPassword: {
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  forgotPasswordText: {
+    color: '#888',
+    fontSize: 14,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerText: {
+    color: '#888',
+    fontSize: 14,
+  },
+  registerLink: {
+    color: '#E50914',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+});
+
+export default LoginScreen;

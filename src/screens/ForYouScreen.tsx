@@ -3,7 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  Image,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
@@ -20,11 +19,10 @@ import {
   getTrendingMovies,
   getNowPlayingMovies,
 } from '../services/RecommendationService';
-import { TMDB_IMAGE_SIZES } from '../config';
+import { MovieCard } from '../components';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const POSTER_WIDTH = (SCREEN_WIDTH - 48) / 2;
-const TMDB_IMAGE_BASE_URL = TMDB_IMAGE_SIZES.poster.medium;
 
 type TabType = 'trending' | 'recommended' | 'latest';
 
@@ -125,42 +123,12 @@ const ForYouScreen: React.FC = () => {
   };
 
   const renderMovieItem = useCallback(({ item }: { item: Movie }) => {
-    const posterUri = item.poster_path
-      ? `${TMDB_IMAGE_BASE_URL}${item.poster_path}`
-      : null;
-
     return (
-      <TouchableOpacity
-        style={styles.movieCard}
-        onPress={() => handleMoviePress(item)}
-        activeOpacity={0.7}
-      >
-        {posterUri ? (
-          <Image source={{ uri: posterUri }} style={styles.poster} />
-        ) : (
-          <View style={[styles.poster, styles.placeholderPoster]}>
-            <Ionicons name="film-outline" size={40} color="#666" />
-          </View>
-        )}
-        <View style={styles.movieInfo}>
-          <Text style={styles.movieTitle} numberOfLines={2}>
-            {item.title}
-          </Text>
-          <View style={styles.movieMeta}>
-            {item.vote_average !== undefined && item.vote_average > 0 && (
-              <View style={styles.ratingContainer}>
-                <Ionicons name="star" size={12} color="#FFD700" />
-                <Text style={styles.rating}>{item.vote_average.toFixed(1)}</Text>
-              </View>
-            )}
-            {item.release_date && (
-              <Text style={styles.releaseYear}>
-                {new Date(item.release_date).getFullYear()}
-              </Text>
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
+      <MovieCard
+        movie={item}
+        onPress={handleMoviePress}
+        style={{ width: POSTER_WIDTH }}
+      />
     );
   }, [handleMoviePress]);
 
@@ -340,50 +308,6 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: 'space-between',
     marginBottom: 16,
-  },
-  movieCard: {
-    width: POSTER_WIDTH,
-    backgroundColor: '#1e1e1e',
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  poster: {
-    width: '100%',
-    height: POSTER_WIDTH * 1.5,
-    backgroundColor: '#2a2a2a',
-  },
-  placeholderPoster: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  movieInfo: {
-    padding: 10,
-  },
-  movieTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 6,
-    minHeight: 36,
-  },
-  movieMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  rating: {
-    fontSize: 12,
-    color: '#FFD700',
-    fontWeight: '600',
-  },
-  releaseYear: {
-    fontSize: 12,
-    color: '#888',
   },
   emptyContainer: {
     flex: 1,

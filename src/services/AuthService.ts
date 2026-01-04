@@ -11,7 +11,7 @@ export interface User {
 }
 
 /**
- * Get stored auth token
+ * Get stored authentication token from secure storage
  */
 export const getToken = async (): Promise<string | null> => {
   try {

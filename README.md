@@ -169,25 +169,16 @@ Movie-app/
 
 ## 📱 Screenshots
 
-### Main Page
-Discover trending movies and personalized recommendations.
+<p align="center">
+  <img src="screenshots/main_page.jpeg" width="200" alt="Main Page"/>
+  <img src="screenshots/search_page.jpeg" width="200" alt="Search Page"/>
+  <img src="screenshots/collection_page.jpeg" width="200" alt="Collection Page"/>
+  <img src="screenshots/profile_page.jpeg" width="200" alt="Profile Page"/>
+</p>
 
-![Main Page](screenshots/main_page.jpeg)
-
-### Search Page
-Search for any movie in TMDB's extensive database with advanced filters.
-
-![Search Page](screenshots/search_page.jpeg)
-
-### Collection Page
-Create and manage your personalized movie collections.
-
-![Collection Page](screenshots/collection_page.jpeg)
-
-### Profile Page
-View your profile, ratings, and manage your account.
-
-![Profile Page](screenshots/profile_page.jpeg)
+<p align="center">
+  <em>Main Page • Search Page • Collection Page • Profile Page</em>
+</p>
 
 ## 🤝 Contributing
 

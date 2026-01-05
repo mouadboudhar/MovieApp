@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../types';
 import { API_BASE_URL, TMDB_IMAGE_SIZES } from '../config';
 import AuthService from '../services/AuthService';
+import { StarRating, LoadingSpinner } from '../components';
 
 interface Rating {
   id: number;
@@ -75,18 +76,7 @@ const RatingsScreen: React.FC = () => {
   }, [fetchRatings]);
 
   const renderStars = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <Ionicons
-          key={i}
-          name={i <= rating ? 'star' : 'star-outline'}
-          size={14}
-          color={i <= rating ? '#FFD700' : '#666'}
-        />
-      );
-    }
-    return <View style={styles.starsContainer}>{stars}</View>;
+    return <StarRating rating={rating} size={14} interactive={false} />;
   };
 
   const formatDate = (dateString: string) => {
@@ -204,9 +194,7 @@ const RatingsScreen: React.FC = () => {
 
       {/* Content */}
       {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#E50914" />
-        </View>
+        <LoadingSpinner fullScreen />
       ) : (
         <FlatList
           data={ratings}

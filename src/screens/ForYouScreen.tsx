@@ -19,7 +19,7 @@ import {
   getTrendingMovies,
   getNowPlayingMovies,
 } from '../services/RecommendationService';
-import { MovieCard } from '../components';
+import { MovieCard, LoadingSpinner } from '../components';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const POSTER_WIDTH = (SCREEN_WIDTH - 48) / 2;
@@ -157,10 +157,7 @@ const ForYouScreen: React.FC = () => {
         <View style={styles.tabContainer}>
           {TABS.map(renderTab)}
         </View>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#E50914" />
-          <Text style={styles.loadingText}>Loading movies...</Text>
-        </View>
+        <LoadingSpinner text="Loading movies..." fullScreen />
       </SafeAreaView>
     );
   }
